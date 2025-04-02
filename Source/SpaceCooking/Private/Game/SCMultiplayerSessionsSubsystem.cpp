@@ -2,22 +2,29 @@
 
 
 #include "Game/SCMultiplayerSessionsSubsystem.h"
-
+#include "OnlineSubsystemUtils.h"
 #include "SCUtilsLibrary.h"
 
 USCMultiplayerSessionsSubsystem::USCMultiplayerSessionsSubsystem()
 {
-	USCUtilsLibrary::PrintStringScreen("@@ My MP session Subsystem is Constructed.");
+	//USCUtilsLibrary::PrintStringScreen("@@ My MP session Subsystem is Constructed.");
 }
 
 void USCMultiplayerSessionsSubsystem::Initialize(FSubsystemCollectionBase& Collection)
 {
-	Super::Initialize(Collection);
-	USCUtilsLibrary::PrintStringScreen("@@ My MP session Subsystem was Initialized.");
+	//Super::Initialize(Collection);
+	IOnlineSubsystem* OnlineSubsystem = Online::GetSubsystem(GetWorld());
+	if (OnlineSubsystem)
+	{
+		SessionInterface = OnlineSubsystem->GetSessionInterface();
+		if (SessionInterface.IsValid())
+		{
+			USCUtilsLibrary::PrintStringScreen("Session is: ["+OnlineSubsystem->GetSubsystemName().ToString()+"] and Is valid");
+		}
+	}
 }
 
 void USCMultiplayerSessionsSubsystem::Deinitialize()
 {
-	USCUtilsLibrary::PrintStringScreen("@@ My MP session Subsystem was DeInitialized.");
-	Super::Deinitialize();
+	//Super::Deinitialize();
 }
