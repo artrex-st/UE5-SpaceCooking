@@ -13,4 +13,9 @@ UCLASS()
 class SPACECOOKING_API USCMultiplayerSessionsSubsystem : public UGameInstanceSubsystem
 {
 	GENERATED_BODY()
+public:
+	USCMultiplayerSessionsSubsystem();
+
+	virtual void Initialize(FSubsystemCollectionBase& Collection) override;
+	virtual void Deinitialize() override;
 };
