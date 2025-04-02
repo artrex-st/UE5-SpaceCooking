@@ -28,3 +28,14 @@ void USCMultiplayerSessionsSubsystem::Deinitialize()
 {
 	//Super::Deinitialize();
 }
+
+void USCMultiplayerSessionsSubsystem::CreateServer(FString ServerName)
+{
+	//SessionInterface.
+	USCUtilsLibrary::PrintStringScreen("Create Server: "+ ServerName);
+}
+
+void USCMultiplayerSessionsSubsystem::JoinServer(FString ServerName)
+{
+	USCUtilsLibrary::PrintStringScreen("Join Server: "+ ServerName);
+}

@@ -15,11 +15,16 @@ UCLASS()
 class SPACECOOKING_API USCMultiplayerSessionsSubsystem : public UGameInstanceSubsystem
 {
 	GENERATED_BODY()
-public:
 	USCMultiplayerSessionsSubsystem();
+
+public:
+	TWeakPtr<IOnlineSession> SessionInterface;
 
 	virtual void Initialize(FSubsystemCollectionBase& Collection) override;
 	virtual void Deinitialize() override;
 
-	TWeakPtr<IOnlineSession> SessionInterface;
+	UFUNCTION(BlueprintCallable, Category = "SpaceCooking")
+	void CreateServer(FString ServerName);
+	UFUNCTION(BlueprintCallable, Category = "SpaceCooking")
+	void JoinServer(FString ServerName);
 };
