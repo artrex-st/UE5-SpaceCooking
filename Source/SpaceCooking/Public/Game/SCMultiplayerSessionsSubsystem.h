@@ -19,6 +19,8 @@ class SPACECOOKING_API USCMultiplayerSessionsSubsystem : public UGameInstanceSub
 
 public:
 	TWeakPtr<IOnlineSession> SessionInterface;
+	bool bCreateServerAfterDestroy = false;
+	FString DestroyServerName;
 
 	virtual void Initialize(FSubsystemCollectionBase& Collection) override;
 	virtual void Deinitialize() override;
@@ -28,6 +30,6 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "SpaceCooking")
 	void JoinServer(FString ServerName);
 
-	UFUNCTION()
 	void OnCreateSessionCompleted(FName SessionName, bool bIsSuccessful);
+	void OnDestroySessionCompleted(FName SessionName, bool bIsSuccessful);
 };

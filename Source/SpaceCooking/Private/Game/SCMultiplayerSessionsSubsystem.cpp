@@ -23,6 +23,7 @@ void USCMultiplayerSessionsSubsystem::Initialize(FSubsystemCollectionBase& Colle
 		{
 			USCUtilsLibrary::PrintStringScreen("Session is: ["+OnlineSubsystem->GetSubsystemName().ToString()+"] and Is valid");
 			SessionInterface.Pin()->OnCreateSessionCompleteDelegates.AddUObject(this, &USCMultiplayerSessionsSubsystem::OnCreateSessionCompleted);
+			SessionInterface.Pin()->OnDestroySessionCompleteDelegates.AddUObject(this, &USCMultiplayerSessionsSubsystem::OnDestroySessionCompleted);
 		}
 	}
 }
@@ -38,6 +39,15 @@ void USCMultiplayerSessionsSubsystem::CreateServer(FString ServerName)
 	if (ServerName.IsEmpty()) UE_LOG(LogTemp, Warning, TEXT("Server Name can't be Empty!"));
 
 	FName SessionName = FName("Co-op Session");
+
+	if (FNamedOnlineSession* ExistingSession = SessionInterface.Pin()->GetNamedSession(SessionName))
+	{
+		SessionInterface.Pin()->DestroySession(SessionName);
+		bCreateServerAfterDestroy = true;
+		DestroyServerName = ServerName;
+		return;
+	}
+
 	FOnlineSessionSettings SessionSettings;
 	SessionSettings.bAllowJoinInProgress = true;
 	SessionSettings.bIsDedicated = false;
@@ -66,5 +76,17 @@ void USCMultiplayerSessionsSubsystem::OnCreateSessionCompleted(FName SessionName
 	if (bIsSuccessful)
 	{
 		GetWorld()->ServerTravel("/Game/FirstPerson/Maps/FirstPersonMap?listen");
+	}
+}
+
+void USCMultiplayerSessionsSubsystem::OnDestroySessionCompleted(FName SessionName, bool bIsSuccessful)
+{
+	FString Result = bIsSuccessful ? "Successful" : "Fail";
+	USCUtilsLibrary::PrintStringScreen("Session " + SessionName.ToString() + " Destroied with:" + Result);
+
+	if (bCreateServerAfterDestroy)
+	{
+		bCreateServerAfterDestroy = false;
+		CreateServer(DestroyServerName);
 	}
 }
