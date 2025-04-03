@@ -4,8 +4,8 @@
 
 #include "CoreMinimal.h"
 #include "Subsystems/GameInstanceSubsystem.h"
-#include "OnlineSubsystem.h"
 #include "Interfaces/OnlineSessionInterface.h"
+#include "OnlineSessionSettings.h"
 #include "SCMultiplayerSessionsSubsystem.generated.h"
 
 /**
@@ -19,8 +19,11 @@ class SPACECOOKING_API USCMultiplayerSessionsSubsystem : public UGameInstanceSub
 
 public:
 	TWeakPtr<IOnlineSession> SessionInterface;
+	TSharedPtr<FOnlineSessionSearch> SessionSearchSettings;
 	bool bCreateServerAfterDestroy = false;
-	FString DestroyServerName;
+	FString ServerNameToFind = "";
+	FString DestroyServerName = "";
+	FName MySessionName = "";
 
 	virtual void Initialize(FSubsystemCollectionBase& Collection) override;
 	virtual void Deinitialize() override;
@@ -32,4 +35,6 @@ public:
 
 	void OnCreateSessionCompleted(FName SessionName, bool bIsSuccessful);
 	void OnDestroySessionCompleted(FName SessionName, bool bIsSuccessful);
+	void OnFindSessionsCompleted(bool bIsSuccessful);
+	void OnJoinSessionsCompleted(FName SessionName, EOnJoinSessionCompleteResult::Type Result);
 };

@@ -5,7 +5,7 @@
 
 void USCUtilsLibrary::PrintStringScreen(const FString& String)
 {
-#if UE_EDITOR
+#if true
 	if (GEngine)
 	{
 		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Cyan, String);
