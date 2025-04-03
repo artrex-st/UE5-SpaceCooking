@@ -14,6 +14,16 @@ USCMultiplayerSessionsSubsystem::USCMultiplayerSessionsSubsystem()
 	//USCUtilsLibrary::PrintStringScreen("@@ My MP session Subsystem is Constructed.");
 }
 
+bool USCMultiplayerSessionsSubsystem::ShouldCreateSubsystem(UObject* Outer) const
+{
+	if (this->GetClass()->IsInBlueprint() && Super::ShouldCreateSubsystem(Outer))
+	{
+		return true;
+	}
+
+	return false;
+}
+
 void USCMultiplayerSessionsSubsystem::Initialize(FSubsystemCollectionBase& Collection)
 {
 	//Super::Initialize(Collection);
@@ -71,7 +81,7 @@ void USCMultiplayerSessionsSubsystem::CreateServer(FString ServerName)
 
 	const bool IsLan = Online::GetSubsystem(GetWorld())->GetSubsystemName().IsEqual(FName("NULL"));
 	SessionSettings.bIsLANMatch = IsLan;
-	SessionSettings.Set(FName("SERVER_NAME"), ServerName, EOnlineDataAdvertisementType::ViaOnlineServiceAndPing);
+	SessionSettings.Set(ServerNameFlag, ServerName, EOnlineDataAdvertisementType::ViaOnlineServiceAndPing);
 
 	SessionInterface.Pin()->CreateSession(0, MySessionName, SessionSettings);
 }
@@ -104,7 +114,9 @@ void USCMultiplayerSessionsSubsystem::OnCreateSessionCompleted(FName SessionName
 
 	if (bIsSuccessful)
 	{
-		GetWorld()->ServerTravel("/Game/FirstPerson/Maps/FirstPersonMap?listen");
+		FString Path = GameMapPath.IsEmpty() ? "/Game/Levels/Gameplay_1?listen" : GameMapPath + "?listen";
+
+		GetWorld()->ServerTravel(Path);
 	}
 }
 
@@ -139,7 +151,7 @@ void USCMultiplayerSessionsSubsystem::OnFindSessionsCompleted(bool bIsSuccessful
 			if (SessionResult.IsValid())
 			{
 				FString Servername = "No-name";
-				SessionResult.Session.SessionSettings.Get(FName("SERVER_NAME"), Servername);
+				SessionResult.Session.SessionSettings.Get(ServerNameFlag, Servername);
 
 				if (Servername.Equals(ServerNameToFind))
 				{
@@ -175,11 +187,8 @@ void USCMultiplayerSessionsSubsystem::OnJoinSessionsCompleted(FName SessionName,
 
 		if (const bool bSuccess = SessionInterface.Pin()->GetResolvedConnectString(SessionName, Address))
 		{
-			USCUtilsLibrary::PrintStringScreen(FString::Printf(TEXT("Server Address: %s."), *Address));
-
 			if (APlayerController* PlayerController = GetGameInstance()->GetFirstLocalPlayerController())
 			{
-				UE_LOG(LogTemp, Warning, TEXT("ClientTravel para: %s"), *Address);
 				PlayerController->ClientTravel(Address, TRAVEL_Absolute);
 			}
 				

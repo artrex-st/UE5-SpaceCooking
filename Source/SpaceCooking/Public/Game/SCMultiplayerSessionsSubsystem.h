@@ -13,7 +13,7 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FServerResponseDelegate, bool, bWasS
 /**
  * 
  */
-UCLASS()
+UCLASS(Blueprintable)
 class SPACECOOKING_API USCMultiplayerSessionsSubsystem : public UGameInstanceSubsystem
 {
 	GENERATED_BODY()
@@ -22,13 +22,8 @@ class SPACECOOKING_API USCMultiplayerSessionsSubsystem : public UGameInstanceSub
 public:
 	UPROPERTY(BlueprintAssignable, Category = "SpaceCooking|Multiplayer")
 	FServerResponseDelegate OnMultiplayerSessionResponse;
-	TWeakPtr<IOnlineSession> SessionInterface;
-	TSharedPtr<FOnlineSessionSearch> SessionSearchSettings;
-	bool bCreateServerAfterDestroy = false;
-	FString ServerNameToFind = "";
-	FString DestroyServerName = "";
-	FName MySessionName = "";
 
+	virtual bool ShouldCreateSubsystem(UObject* Outer) const override;
 	virtual void Initialize(FSubsystemCollectionBase& Collection) override;
 	virtual void Deinitialize() override;
 
@@ -37,8 +32,22 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "SpaceCooking")
 	void JoinServer(FString ServerName);
 
+private:
+	TWeakPtr<IOnlineSession> SessionInterface;
+	TSharedPtr<FOnlineSessionSearch> SessionSearchSettings;
+	bool bCreateServerAfterDestroy = false;
+	FString ServerNameToFind = "";
+	FString DestroyServerName = "";
+	FName MySessionName = "";
+
 	void OnCreateSessionCompleted(FName SessionName, bool bIsSuccessful);
 	void OnDestroySessionCompleted(FName SessionName, bool bIsSuccessful);
 	void OnFindSessionsCompleted(bool bIsSuccessful);
 	void OnJoinSessionsCompleted(FName SessionName, EOnJoinSessionCompleteResult::Type Result);
+
+	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category = "SpaceCooking|Multiplayer",
+		meta = (AllowPrivateAccess = "true", ToolTip = "Usar endereço do mapa como: \"/Game/Levels/NomeDoLevel\""))
+	FString GameMapPath = "/Game/Levels/Gameplay_1?listen";
+
+	FName ServerNameFlag = FName("SERVER_NAME");
 };
