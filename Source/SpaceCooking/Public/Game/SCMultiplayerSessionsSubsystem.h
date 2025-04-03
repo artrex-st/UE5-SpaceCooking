@@ -27,4 +27,7 @@ public:
 	void CreateServer(FString ServerName);
 	UFUNCTION(BlueprintCallable, Category = "SpaceCooking")
 	void JoinServer(FString ServerName);
+
+	UFUNCTION()
+	void OnCreateSessionCompleted(FName SessionName, bool bIsSuccessful);
 };
