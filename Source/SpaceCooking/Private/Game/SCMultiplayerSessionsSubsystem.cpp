@@ -34,12 +34,21 @@ void USCMultiplayerSessionsSubsystem::Initialize(FSubsystemCollectionBase& Colle
 
 void USCMultiplayerSessionsSubsystem::Deinitialize()
 {
+	if (SessionInterface.IsValid())
+	{
+		SessionInterface.Pin()->DestroySession(MySessionName);
+	}
 	//Super::Deinitialize();
 }
 
 void USCMultiplayerSessionsSubsystem::CreateServer(FString ServerName)
 {
-	if (ServerName.IsEmpty()) UE_LOG(LogTemp, Warning, TEXT("Server Name can't be Empty!"));
+	if (ServerName.IsEmpty())
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Server Name can't be Empty!"));
+		OnMultiplayerSessionResponse.Broadcast(false);
+		return;
+	}
 
 	MySessionName = FName("Co-op Session");
 
@@ -69,8 +78,12 @@ void USCMultiplayerSessionsSubsystem::CreateServer(FString ServerName)
 
 void USCMultiplayerSessionsSubsystem::JoinServer(FString ServerName)
 {
-	if (ServerName.IsEmpty()) UE_LOG(LogTemp, Warning, TEXT("Server Name can't be Empty!"));
-
+	if (ServerName.IsEmpty())
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Server Name can't be Empty!"));
+		OnMultiplayerSessionResponse.Broadcast(false);
+		return;
+	}
 
 	SessionSearchSettings = MakeShareable(new FOnlineSessionSearch());
 	const bool IsLan = Online::GetSubsystem(GetWorld())->GetSubsystemName().IsEqual(FName("NULL"));
@@ -84,8 +97,10 @@ void USCMultiplayerSessionsSubsystem::JoinServer(FString ServerName)
 
 void USCMultiplayerSessionsSubsystem::OnCreateSessionCompleted(FName SessionName, bool bIsSuccessful)
 {
-	FString Result = bIsSuccessful ? "Successful" : "Fail";
+	const FString Result = bIsSuccessful ? "Successful" : "Fail";
 	USCUtilsLibrary::PrintStringScreen("Session " + SessionName.ToString() + " Created with:" + Result);
+
+	OnMultiplayerSessionResponse.Broadcast(bIsSuccessful);
 
 	if (bIsSuccessful)
 	{
@@ -107,8 +122,11 @@ void USCMultiplayerSessionsSubsystem::OnDestroySessionCompleted(FName SessionNam
 
 void USCMultiplayerSessionsSubsystem::OnFindSessionsCompleted(bool bIsSuccessful)
 {
-	if (!bIsSuccessful) return;
-	if (ServerNameToFind.IsEmpty()) return;
+	if (!bIsSuccessful || ServerNameToFind.IsEmpty())
+	{
+		OnMultiplayerSessionResponse.Broadcast(bIsSuccessful);
+		return;
+	}
 
 	TArray<FOnlineSessionSearchResult> SessionResults = SessionSearchSettings->SearchResults;
 	FOnlineSessionSearchResult* CorrectSession = nullptr;
@@ -144,6 +162,7 @@ void USCMultiplayerSessionsSubsystem::OnFindSessionsCompleted(bool bIsSuccessful
 		return;
 	}
 
+	OnMultiplayerSessionResponse.Broadcast(false);
 	USCUtilsLibrary::PrintStringScreen("No Sessions Found.");
 }
 
@@ -194,4 +213,6 @@ void USCMultiplayerSessionsSubsystem::OnJoinSessionsCompleted(FName SessionName,
 	default:
 		USCUtilsLibrary::PrintStringScreen(FString::Printf(TEXT("Error to join on. hmmm i don't know :(")));
 	}
+
+	OnMultiplayerSessionResponse.Broadcast(false);
 }

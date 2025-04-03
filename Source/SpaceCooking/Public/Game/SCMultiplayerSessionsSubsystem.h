@@ -8,6 +8,8 @@
 #include "OnlineSessionSettings.h"
 #include "SCMultiplayerSessionsSubsystem.generated.h"
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FServerResponseDelegate, bool, bWasSuccessful);
+
 /**
  * 
  */
@@ -18,6 +20,8 @@ class SPACECOOKING_API USCMultiplayerSessionsSubsystem : public UGameInstanceSub
 	USCMultiplayerSessionsSubsystem();
 
 public:
+	UPROPERTY(BlueprintAssignable, Category = "SpaceCooking|Multiplayer")
+	FServerResponseDelegate OnMultiplayerSessionResponse;
 	TWeakPtr<IOnlineSession> SessionInterface;
 	TSharedPtr<FOnlineSessionSearch> SessionSearchSettings;
 	bool bCreateServerAfterDestroy = false;
