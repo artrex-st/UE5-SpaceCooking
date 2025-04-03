@@ -42,6 +42,13 @@ void ASpaceCookingCharacter::BeginPlay()
 {
 	// Call the base class  
 	Super::BeginPlay();
+
+	if (IsLocallyControlled())
+	{
+		// FName BoneToHide = TEXT("head");
+		// GetMesh()->HideBoneByName(BoneToHide, EPhysBodyOp::PBO_None);
+		GetMesh()->SetOwnerNoSee(true);
+	}
 }
 
 //////////////////////////////////////////////////////////////////////////// Input

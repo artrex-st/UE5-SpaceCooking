@@ -12,3 +12,13 @@ void USCUtilsLibrary::PrintStringScreen(const FString& String)
 	}
 #endif
 }
+
+void USCUtilsLibrary::PrintStringScreen(const FString& String, const FColor& NewColor)
+{
+#if true
+	if (GEngine)
+	{
+		GEngine->AddOnScreenDebugMessage(-1, 5.f, NewColor, String);
+	}
+#endif
+}

@@ -15,4 +15,5 @@ class SPACECOOKING_API USCUtilsLibrary : public UBlueprintFunctionLibrary
 	GENERATED_BODY()
 public:
 	static void PrintStringScreen(const FString& String);
+	static void PrintStringScreen(const FString& String, const FColor& NewColor);
 };
