@@ -4,6 +4,7 @@
 #include "Actors/SCDetectionActor.h"
 
 #include "SCUtilsLibrary.h"
+#include "Actors/SCTransporter.h"
 
 
 ASCDetectionActor::ASCDetectionActor()
@@ -16,13 +17,18 @@ ASCDetectionActor::ASCDetectionActor()
 	
 	Mesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Mesh"));
 	Mesh->SetupAttachment(RootComp);
-	Mesh->SetCollisionResponseToAllChannels(ECR_Ignore);
+	Mesh->SetCollisionResponseToAllChannels(ECR_Block);
+
+	Transporter = CreateDefaultSubobject<USCTransporter>(TEXT("Transporter"));
 }
 
 void ASCDetectionActor::BeginPlay()
 {
 	Super::BeginPlay();
 	SetReplicateMovement(true);
+	auto StartPoint = GetActorLocation();
+	auto EndPoint = StartPoint + FVector(0,0,-10);
+	Transporter->SetTransporterPoints(StartPoint, EndPoint);
 }
 
 void ASCDetectionActor::OnTriggerBeginOverlap(UPrimitiveComponent* OverlappedComp, AActor* Other,

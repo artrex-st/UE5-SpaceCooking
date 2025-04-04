@@ -18,6 +18,8 @@ void USCTransporter::BeginPlay()
 	Super::BeginPlay();
 	MyOwner = GetOwner();
 
+	if (bSelfActorTrigger) TriggerActors.Add(MyOwner);
+
 	for (AActor* Actor : TriggerActors)
 	{
 		if (ASCDetectionActor* Detector = Cast<ASCDetectionActor>(Actor))
@@ -26,8 +28,6 @@ void USCTransporter::BeginPlay()
 			Detector->OnDeactivated.AddDynamic(this, &USCTransporter::OnDetectionDeactivated);
 		}
 	}
-
-	SetTransporterPoints(MyOwner->GetActorLocation(), MyOwner->GetActorLocation() + (FVector::UpVector * 200));
 }
 
 void USCTransporter::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)

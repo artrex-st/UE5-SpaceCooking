@@ -6,6 +6,7 @@
 #include "GameFramework/Actor.h"
 #include "SCDetectionActor.generated.h"
 
+class USCTransporter;
 class UBoxComponent;
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FDetectionActorOnActivated);
@@ -15,13 +16,13 @@ UCLASS()
 class SPACECOOKING_API ASCDetectionActor : public AActor
 {
 	GENERATED_BODY()
+	ASCDetectionActor();
 
 public:
 	UPROPERTY(BlueprintAssignable, Category = "SpaceCooking")
 	FDetectionActorOnActivated OnActivated;
 	UPROPERTY(BlueprintAssignable, Category = "SpaceCooking")
 	FDetectionActorOnDeactivated OnDeactivated;
-	ASCDetectionActor();
 
 protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "SpaceCooking")
@@ -29,6 +30,9 @@ protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "SpaceCooking",
 		meta = (ToolTip = "Shape visual"))
 	UStaticMeshComponent* Mesh;
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "SpaceCooking")
+	USCTransporter* Transporter;
+
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "SpaceCooking")
 	bool bActivated = false;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "SpaceCooking")

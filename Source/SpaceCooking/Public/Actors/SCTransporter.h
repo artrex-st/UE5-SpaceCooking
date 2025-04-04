@@ -30,6 +30,9 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "SpaceCooking",
 		meta = (ToolTip = "Define se deve travar quando chegar ao destino."))
 	bool bHasLockOnEnd = false;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "SpaceCooking",
+		meta = (ToolTip = "Define se deve travar quando chegar ao destino."))
+	bool bSelfActorTrigger = false;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "SpaceCooking")
 	TArray<AActor*> TriggerActors;
