@@ -41,7 +41,7 @@ void ASCDetectionActor::OnTriggerBeginOverlap(UPrimitiveComponent* OverlappedCom
 			ActorsDetected.AddUnique(Other);
 			bActivated = true;
 			OnActivated.Broadcast();
-			GetWorld()->GetTimerManager().SetTimer(DetectionTimer, this,
+			GetWorldTimerManager().SetTimer(DetectionTimer, this,
 				&ASCDetectionActor::TriggerDetectionEvent, DetectionTimerInterval, true);
 		}
 	}
@@ -63,7 +63,7 @@ void ASCDetectionActor::OnTriggerEndOverlap(UPrimitiveComponent* OverlappedComp,
 		{
 			bActivated = false;
 			USCUtilsLibrary::PrintStringScreen("Deactivate Bool");
-			GetWorld()->GetTimerManager().ClearTimer(DetectionTimer);
+			GetWorldTimerManager().ClearTimer(DetectionTimer);
 		}
 	}
 }
@@ -72,7 +72,7 @@ void ASCDetectionActor::TriggerDetectionEvent()
 {
 	if (ActorsDetected.IsEmpty())
 	{
-		GetWorld()->GetTimerManager().ClearTimer(DetectionTimer);
+		GetWorldTimerManager().ClearTimer(DetectionTimer);
 		return;
 	}
 }

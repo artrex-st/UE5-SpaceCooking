@@ -6,6 +6,7 @@
 #include "GameFramework/Actor.h"
 #include "SCKeyActor.generated.h"
 
+class ASCKeyHolderActor;
 class USphereComponent;
 
 UCLASS()
@@ -22,6 +23,12 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "SpaceCooking",
 		meta = (ToolTip = "Shape visual"))
 	UStaticMeshComponent* Mesh;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "SpaceCooking",
+	meta = (ToolTip = "Velocidade da animaçao da mesh"))
+	float KeyMeshRotationSpeed = 100;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "SpaceCooking",
+	meta = (ToolTip = "Referencia do Suporte de Keys"))
+	ASCKeyHolderActor* KeyHolderReference;
 
 	UPROPERTY(ReplicatedUsing= OnRep_IsCollected, BlueprintReadWrite, VisibleAnywhere)
 	bool bIsCollected = false;
@@ -38,4 +45,7 @@ public:
 	void OnTriggerEndOverlap(UPrimitiveComponent* OverlappedComp, AActor* Other, UPrimitiveComponent* OtherComp,
 		int32 OtherBodyIndex);
 
+private:
+	FTimerHandle KeyRotationEffect;
+	void PerformRotation();
 };

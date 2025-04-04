@@ -3,6 +3,7 @@
 
 #include "Actors/SCKeyActor.h"
 
+#include "Actors/SCKeyHolderActor.h"
 #include "Net/UnrealNetwork.h"
 
 
@@ -24,13 +25,15 @@ ASCKeyActor::ASCKeyActor()
 void ASCKeyActor::BeginPlay()
 {
 	Super::BeginPlay();
-	
+	GetWorldTimerManager().SetTimer(KeyRotationEffect, this, &ASCKeyActor::PerformRotation, 0.016f, true, 0);
 }
 
 void ASCKeyActor::OnRep_IsCollected()
 {
 	Mesh->SetVisibility(false);
 	SetHidden(true);
+	KeyHolderReference->SetNewKey();
+	GetWorldTimerManager().ClearTimer(KeyRotationEffect);
 }
 
 void ASCKeyActor::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
@@ -56,5 +59,10 @@ void ASCKeyActor::OnTriggerEndOverlap(UPrimitiveComponent* OverlappedComp, AActo
 	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
 {
 	
+}
+
+void ASCKeyActor::PerformRotation()
+{
+	Mesh->AddRelativeRotation(FRotator(0, KeyMeshRotationSpeed * GetWorld()->GetDeltaSeconds(), 0));
 }
 

@@ -58,7 +58,7 @@ void USCMouseInteractiveComp::Interact()
 	FCollisionQueryParams Params;
 	Params.AddIgnoredActor(OwnerCharacter);
 
-	DrawDebugLine(GetWorld(),Start, End, FColor::Emerald, false, 0.5f, 0, 1.f);
+	DrawDebugLine(GetWorld(),Start, End, FColor::Emerald, false, 0.1f, 0, 1.f);
 
 	if (GetWorld()->LineTraceSingleByChannel(HitResult, Start, End, ECC_WorldDynamic, Params))
 	{
@@ -67,6 +67,7 @@ void USCMouseInteractiveComp::Interact()
 			GrabbedActor = HitResult.GetActor();
 			GrabbedActor->DisableComponentsSimulatePhysics();
 			GrabbedActor->AttachToComponent(OwnerCharacter->GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, InteractableSocket);
+			//TODO: Add Feedback (VFX/SFX)
 		}
 	}
 }
