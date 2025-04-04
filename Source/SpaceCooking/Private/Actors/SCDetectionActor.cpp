@@ -30,15 +30,11 @@ void ASCDetectionActor::OnTriggerBeginOverlap(UPrimitiveComponent* OverlappedCom
 {
 	if (HasAuthority())
 	{
-		USCUtilsLibrary::PrintStringScreen(Other->GetName()+" Begin Overlap!");
-
-		if (Other->ActorHasTag(TagAllowed))
+		if (Other->ActorHasTag(TagAllowed) && bActivated == false)
 		{
 			ActorsDetected.AddUnique(Other);
 			bActivated = true;
 			OnActivated.Broadcast();
-
-			USCUtilsLibrary::PrintStringScreen(Other->GetName()+" Has The Key!");
 			GetWorld()->GetTimerManager().SetTimer(DetectionTimer, this,
 				&ASCDetectionActor::TriggerDetectionEvent, DetectionTimerInterval, true);
 		}
@@ -50,17 +46,17 @@ void ASCDetectionActor::OnTriggerEndOverlap(UPrimitiveComponent* OverlappedComp,
 {
 	if (HasAuthority())
 	{
-		USCUtilsLibrary::PrintStringScreen(Other->GetName()+" End Overlap.");
-
 		if (ActorsDetected.Contains(Other))
 		{
 			ActorsDetected.Remove(Other);
+			OnDeactivated.Broadcast();
+			USCUtilsLibrary::PrintStringScreen("Deactivate Broadcast");
 		}
 
-		if (ActorsDetected.Num() < 0)
+		if (ActorsDetected.Num() <= 0)
 		{
 			bActivated = false;
-			OnDeactivated.Broadcast();
+			USCUtilsLibrary::PrintStringScreen("Deactivate Bool");
 			GetWorld()->GetTimerManager().ClearTimer(DetectionTimer);
 		}
 	}
@@ -70,18 +66,8 @@ void ASCDetectionActor::TriggerDetectionEvent()
 {
 	if (ActorsDetected.IsEmpty())
 	{
-		USCUtilsLibrary::PrintStringScreen("No Actors Detected.");
 		GetWorld()->GetTimerManager().ClearTimer(DetectionTimer);
 		return;
 	}
-
-	FString Actors;
-	for (AActor* Actor : ActorsDetected)
-	{
-		USCUtilsLibrary::PrintStringScreen(Actor->GetName()+" Has The Key!");
-		Actors += Actor->GetName() + ", ";
-	}
-
-	USCUtilsLibrary::PrintStringScreen(Actors + " Still on Detection Overlap.");
 }
 

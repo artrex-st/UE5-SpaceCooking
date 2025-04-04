@@ -11,17 +11,46 @@ UCLASS(ClassGroup=(Custom), meta=(BlueprintSpawnableComponent))
 class SPACECOOKING_API USCTransporter : public UActorComponent
 {
 	GENERATED_BODY()
-
-public:
-	// Sets default values for this component's properties
 	USCTransporter();
-
+public:
+	virtual void TickComponent(float DeltaTime, ELevelTick TickType,
+		FActorComponentTickFunction* ThisTickFunction) override;
 protected:
-	// Called when the game starts
 	virtual void BeginPlay() override;
 
 public:
-	// Called every frame
-	virtual void TickComponent(float DeltaTime, ELevelTick TickType,
-	                           FActorComponentTickFunction* ThisTickFunction) override;
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "SpaceCooking")
+	FVector StartPoint = FVector::Zero();
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "SpaceCooking")
+	FVector EndPoint = FVector::Zero();
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "SpaceCooking")
+	bool bIsPointsSet = false;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "SpaceCooking")
+	float MoveTime = 2.f;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "SpaceCooking",
+		meta = (ToolTip = "Define se deve travar quando chegar ao destino."))
+	bool bHasLockOnEnd = false;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "SpaceCooking")
+	TArray<AActor*> TriggerActors;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "SpaceCooking")
+	int ActivatedTriggerCount = 0;
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "SpaceCooking")
+	bool bAllTriggerActorsTriggered = false;
+
+	UFUNCTION(BlueprintCallable, Category = "SpaceCooking")
+	void SetTransporterPoints(FVector NewStartPoint, FVector NewEndPoint);
+	UFUNCTION(BlueprintCallable, Category = "SpaceCooking")
+	void OnDetectionActivated();
+	UFUNCTION(BlueprintCallable, Category = "SpaceCooking")
+	void OnDetectionDeactivated();
+	void TransporterActivateMove();
+
+private:
+	float TransporterTimerInterval = 0.016f;
+	FTimerHandle TransporterTimer;
+
+	UPROPERTY()
+	TObjectPtr<AActor> MyOwner;
 };
