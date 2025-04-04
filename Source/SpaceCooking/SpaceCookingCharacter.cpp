@@ -36,6 +36,8 @@ ASpaceCookingCharacter::ASpaceCookingCharacter()
 	// Mesh1P->SetRelativeRotation(FRotator(0.9f, -19.19f, 5.2f));
 	// Mesh1P->SetRelativeLocation(FVector(-30.f, 0.f, -150.f));
 
+	MouseInteractiveComp = CreateDefaultSubobject<USCMouseInteractiveComp>(TEXT("InteractiveComponent"));
+
 }
 
 void ASpaceCookingCharacter::BeginPlay()
@@ -67,6 +69,12 @@ void ASpaceCookingCharacter::SetupPlayerInputComponent(UInputComponent* PlayerIn
 
 		// Looking
 		EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &ASpaceCookingCharacter::Look);
+
+		//interact
+		EnhancedInputComponent->BindAction(InteractAction, ETriggerEvent::Triggered, this, &ASpaceCookingCharacter::HandleInteraction);
+
+		//throw
+		EnhancedInputComponent->BindAction(ThrowAction, ETriggerEvent::Triggered, this, &ASpaceCookingCharacter::HandleThrow);
 	}
 	else
 	{
@@ -99,4 +107,21 @@ void ASpaceCookingCharacter::Look(const FInputActionValue& Value)
 		AddControllerYawInput(LookAxisVector.X);
 		AddControllerPitchInput(LookAxisVector.Y);
 	}
+}
+
+void ASpaceCookingCharacter::HandleInteraction()
+{
+	if (HasAuthority())
+	{
+		MouseInteractiveComp->Interact();
+	}
+	else
+	{
+		MouseInteractiveComp->ServerInteract();
+	}
+}
+
+void ASpaceCookingCharacter::HandleThrow()
+{
+	UE_LOG(LogTemp, Display, TEXT("@@ Throw Interactable"));
 }
