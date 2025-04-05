@@ -5,6 +5,7 @@
 
 #include "SCUtilsLibrary.h"
 #include "Actors/SCDetectionActor.h"
+#include "Actors/SCKeyActor.h"
 #include "Kismet/GameplayStatics.h"
 
 USCTransporter::USCTransporter()
@@ -26,6 +27,12 @@ void USCTransporter::BeginPlay()
 		{
 			Detector->OnActivated.AddDynamic(this, &USCTransporter::OnDetectionActivated);
 			Detector->OnDeactivated.AddDynamic(this, &USCTransporter::OnDetectionDeactivated);
+			continue;
+		}
+
+		if (ASCKeyActor* KeyActor = Cast<ASCKeyActor>(Actor))
+		{
+			KeyActor->OnKeyActivated.AddDynamic(this, &USCTransporter::OnDetectionActivated);
 		}
 	}
 }
