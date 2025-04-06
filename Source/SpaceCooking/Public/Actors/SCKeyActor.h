@@ -9,6 +9,8 @@
 class ASCKeyHolderActor;
 class USphereComponent;
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FKeyActorOnActivated);
+
 UCLASS()
 class SPACECOOKING_API ASCKeyActor : public AActor
 {
@@ -18,6 +20,8 @@ protected:
 	virtual void BeginPlay() override;
 
 public:
+	UPROPERTY(BlueprintAssignable, Category = "SpaceCooking")
+	FKeyActorOnActivated OnKeyActivated;
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "SpaceCooking")
 	TObjectPtr<USceneComponent> RootComp;
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "SpaceCooking",

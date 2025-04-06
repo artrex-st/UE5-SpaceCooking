@@ -5,6 +5,8 @@
 
 #include "SCUtilsLibrary.h"
 #include "Actors/SCDetectionActor.h"
+#include "Actors/SCInteractionActor.h"
+#include "Actors/SCKeyActor.h"
 #include "Kismet/GameplayStatics.h"
 
 USCTransporter::USCTransporter()
@@ -26,13 +28,22 @@ void USCTransporter::BeginPlay()
 		{
 			Detector->OnActivated.AddDynamic(this, &USCTransporter::OnDetectionActivated);
 			Detector->OnDeactivated.AddDynamic(this, &USCTransporter::OnDetectionDeactivated);
+			continue;
+		}
+
+		if (ASCKeyActor* KeyActor = Cast<ASCKeyActor>(Actor))
+		{
+			KeyActor->OnKeyActivated.AddDynamic(this, &USCTransporter::OnDetectionActivated);
+			continue;
+		}
+
+		if (ASCInteractionActor* InteractionActor = Cast<ASCInteractionActor>(Actor))
+		{
+			InteractionActor->OnActivated.AddDynamic(this, &USCTransporter::OnDetectionActivated);
+			InteractionActor->OnDeactivated.AddDynamic(this, &USCTransporter::OnDetectionDeactivated);
+			continue;
 		}
 	}
-}
-
-void USCTransporter::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
-{
-	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 }
 
 void USCTransporter::SetTransporterPoints(FVector NewStartPoint, FVector NewEndPoint)

@@ -26,10 +26,10 @@ public:
 	FName InteractableSocket = FName("InteractableSocket");
 
 	UFUNCTION(Server, Reliable, WithValidation)
-	void ServerInteract();
+	void InteractRPC();
 
 	UFUNCTION(Server, Reliable, WithValidation)
-	void ServerRelease();
+	void ReleaseRPC();
 
 	void Interact();
 	void Release();

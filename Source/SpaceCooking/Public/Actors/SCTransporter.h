@@ -11,11 +11,8 @@ UCLASS(ClassGroup=(Custom), meta=(BlueprintSpawnableComponent))
 class SPACECOOKING_API USCTransporter : public UActorComponent
 {
 	GENERATED_BODY()
-	USCTransporter();
 public:
-	virtual void TickComponent(float DeltaTime, ELevelTick TickType,
-		FActorComponentTickFunction* ThisTickFunction) override;
-protected:
+	USCTransporter();
 	virtual void BeginPlay() override;
 
 public:

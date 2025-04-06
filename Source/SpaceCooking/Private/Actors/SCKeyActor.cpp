@@ -30,10 +30,13 @@ void ASCKeyActor::BeginPlay()
 
 void ASCKeyActor::OnRep_IsCollected()
 {
+	if (!bIsCollected) return;
+
 	Mesh->SetVisibility(false);
 	SetHidden(true);
 	KeyHolderReference->SetNewKey();
 	GetWorldTimerManager().ClearTimer(KeyRotationEffect);
+	OnKeyActivated.Broadcast();
 }
 
 void ASCKeyActor::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
