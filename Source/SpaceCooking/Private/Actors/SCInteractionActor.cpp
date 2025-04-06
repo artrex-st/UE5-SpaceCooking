@@ -20,7 +20,7 @@ ASCInteractionActor::ASCInteractionActor()
 	Mesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Mesh"));
 	Mesh->SetupAttachment(RootComp);
 	Mesh->SetCollisionEnabled(ECollisionEnabled::Type::QueryAndPhysics);
-	Mesh->SetCollisionResponseToAllChannels(ECR_Block);\
+	Mesh->SetCollisionResponseToAllChannels(ECR_Block);
 	Mesh->SetCollisionObjectType(ECC_WorldDynamic);
 }
 
