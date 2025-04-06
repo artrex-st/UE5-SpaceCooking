@@ -19,16 +19,16 @@ protected:
 	virtual void BeginPlay() override;
 
 public:
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "SpaceCooking")
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "SpaceCooking|OnlyVisible")
 	TObjectPtr<USceneComponent> RootComp;
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "SpaceCooking",
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "SpaceCooking|OnlyVisible",
 	meta = (ToolTip = "Shape visual"))
 	UStaticMeshComponent* Mesh;
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "SpaceCooking")
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "SpaceCooking|OnlyVisible")
 	USCTransporter* Transporter;
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "SpaceCooking")
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "SpaceCooking|OnlyVisible")
 	UArrowComponent* StartPoint;
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "SpaceCooking")
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "SpaceCooking|OnlyVisible")
 	UArrowComponent* EndPoint;
 
 #if WITH_EDITOR

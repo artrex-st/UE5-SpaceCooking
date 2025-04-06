@@ -16,27 +16,27 @@ public:
 	virtual void BeginPlay() override;
 
 public:
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "SpaceCooking")
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "SpaceCooking|OnlyVisible")
 	FVector StartPoint = FVector::Zero();
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "SpaceCooking")
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "SpaceCooking|OnlyVisible")
 	FVector EndPoint = FVector::Zero();
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "SpaceCooking")
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "SpaceCooking|OnlyVisible")
 	bool bIsPointsSet = false;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "SpaceCooking")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "SpaceCooking|Gameplay")
 	float MoveTime = 2.f;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "SpaceCooking",
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "SpaceCooking|Gameplay",
 		meta = (ToolTip = "Define se deve travar quando chegar ao destino."))
 	bool bHasLockOnEnd = false;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "SpaceCooking",
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "SpaceCooking|Gameplay",
 		meta = (ToolTip = "Define se deve travar quando chegar ao destino."))
 	bool bSelfActorTrigger = false;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "SpaceCooking")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "SpaceCooking|Gameplay")
 	TArray<AActor*> TriggerActors;
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "SpaceCooking")
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "SpaceCooking|OnlyVisible")
 	int ActivatedTriggerCount = 0;
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "SpaceCooking")
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "SpaceCooking|OnlyVisible")
 	bool bAllTriggerActorsTriggered = false;
 
 	UFUNCTION(BlueprintCallable, Category = "SpaceCooking")

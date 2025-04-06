@@ -17,15 +17,15 @@ public:
 	virtual void BeginPlay() override;
 
 public:
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "SpaceCooking")
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "SpaceCooking|OnlyVisible")
 	TObjectPtr<USceneComponent> RootComp;
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "SpaceCooking",
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "SpaceCooking|OnlyVisible",
 		meta = (ToolTip = "Shape visual da base"))
 	UStaticMeshComponent* BaseMesh;
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "SpaceCooking",
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "SpaceCooking|OnlyVisible",
 		meta = (ToolTip = "Shape visual da Key"))
 	UStaticMeshComponent* KeyMesh;
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "SpaceCooking",
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "SpaceCooking|OnlyVisible",
 		meta = (ToolTip = "Velocidade de rotaçao da KeyMesh na base"))
 	float KeyMeshRotationSpeed = 100;
 

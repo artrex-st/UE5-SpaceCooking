@@ -25,20 +25,20 @@ public:
 	FInteractionActorEnable OnActivated;
 	FInteractionActorDisable OnDeactivated;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "SpaceCooking",
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "SpaceCooking|Gameplay",
 	meta = (ToolTip = "Define o Tempo para mais de um Switcher ser ativado (se ouver)."))
 	float SyncTimer = 1.f;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "SpaceCooking", meta = (ToolTip = ""))
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "SpaceCooking|Gameplay", meta = (ToolTip = ""))
 	bool bSelfActorTrigger = true;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "SpaceCooking")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "SpaceCooking|Gameplay")
 	TArray<AActor*> OtherTriggers;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "SpaceCooking",
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "SpaceCooking|Gameplay",
 		meta = (ToolTip = "Define se é ou nao de uso unico."))
 	bool bHasLockOnEnd = false;
 
-	UPROPERTY(ReplicatedUsing= OnRep_IsSwitcherEnabled, BlueprintReadWrite, VisibleAnywhere)
+	UPROPERTY(ReplicatedUsing= OnRep_IsSwitcherEnabled, BlueprintReadWrite, VisibleAnywhere, Category = "SpaceCooking|OnlyVisible")
 	bool bIsActive = false;
 
 	UFUNCTION()
@@ -55,15 +55,15 @@ public:
 	void OnDetectorDeactivated();
 
 protected:
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "SpaceCooking")
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "SpaceCooking|OnlyVisible")
 	TObjectPtr<USceneComponent> RootComp;
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "SpaceCooking",
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "SpaceCooking|OnlyVisible",
 		meta = (ToolTip = "Shape visual"))
 	UStaticMeshComponent* Mesh;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "SpaceCooking",
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "SpaceCooking|Gameplay",
 		meta = (ToolTip = "EnableMaterial"))
 	UMaterialInterface* MaterialInstanceDisable;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "SpaceCooking",
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "SpaceCooking|Gameplay",
 		meta = (ToolTip = "EnableMaterial"))
 	UMaterialInterface* MaterialInstanceEnable;
 

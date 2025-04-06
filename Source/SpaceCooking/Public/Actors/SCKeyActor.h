@@ -22,19 +22,19 @@ protected:
 public:
 	UPROPERTY(BlueprintAssignable, Category = "SpaceCooking")
 	FKeyActorOnActivated OnKeyActivated;
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "SpaceCooking")
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "SpaceCooking|OnlyVisible")
 	TObjectPtr<USceneComponent> RootComp;
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "SpaceCooking",
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "SpaceCooking|OnlyVisible",
 		meta = (ToolTip = "Shape visual"))
 	UStaticMeshComponent* Mesh;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "SpaceCooking",
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "SpaceCooking|Gameplay",
 	meta = (ToolTip = "Velocidade da animaçao da mesh"))
 	float KeyMeshRotationSpeed = 100;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "SpaceCooking",
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "SpaceCooking|Gameplay",
 	meta = (ToolTip = "Referencia do Suporte de Keys"))
 	ASCKeyHolderActor* KeyHolderReference;
 
-	UPROPERTY(ReplicatedUsing= OnRep_IsCollected, BlueprintReadWrite, VisibleAnywhere)
+	UPROPERTY(ReplicatedUsing= OnRep_IsCollected, BlueprintReadWrite, VisibleAnywhere, Category = "SpaceCooking|OnlyVisible")
 	bool bIsCollected = false;
 
 	UFUNCTION()
