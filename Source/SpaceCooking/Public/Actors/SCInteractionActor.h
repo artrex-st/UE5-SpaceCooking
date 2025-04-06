@@ -25,6 +25,19 @@ public:
 	FInteractionActorEnable OnActivated;
 	FInteractionActorDisable OnDeactivated;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "SpaceCooking",
+	meta = (ToolTip = "Define o Tempo para mais de um Switcher ser ativado (se ouver)."))
+	float SyncTimer = 1.f;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "SpaceCooking", meta = (ToolTip = ""))
+	bool bSelfActorTrigger = true;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "SpaceCooking")
+	TArray<AActor*> OtherTriggers;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "SpaceCooking",
+		meta = (ToolTip = "Define se é ou nao de uso unico."))
+	bool bHasLockOnEnd = false;
+
 	UPROPERTY(ReplicatedUsing= OnRep_IsSwitcherEnabled, BlueprintReadWrite, VisibleAnywhere)
 	bool bIsActive = false;
 
@@ -34,6 +47,12 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "SpaceCooking")
 	void ActiveInteraction();
 	void DeActiveInteraction();
+	void PerformSwitcher();
+
+	UFUNCTION(BlueprintCallable, Category = "SpaceCooking")
+	void OnDetectorActivated();
+	UFUNCTION(BlueprintCallable, Category = "SpaceCooking")
+	void OnDetectorDeactivated();
 
 protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "SpaceCooking")
@@ -48,6 +67,9 @@ protected:
 		meta = (ToolTip = "EnableMaterial"))
 	UMaterialInterface* MaterialInstanceEnable;
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "SpaceCooking")
-	USCSwitcherComp* SwitcherComp;
+private:
+	int ActivatedTriggerCount = 0;
+	bool bAllTriggerActorsTriggered = false;
+	float SwitcherTimerInterval = 0.016f;
+	FTimerHandle SwitcherTimer;
 };
