@@ -35,8 +35,8 @@ public:
 	TArray<AActor*> OtherTriggers;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "SpaceCooking|Gameplay",
-		meta = (ToolTip = "Define se é ou nao de uso unico."))
-	bool bHasLockOnEnd = false;
+		meta = (ToolTip = "Define se é desativa com tempo ou nao."))
+	bool bHasTimeToDeActive = false;
 
 	UPROPERTY(ReplicatedUsing= OnRep_IsSwitcherEnabled, BlueprintReadWrite, VisibleAnywhere, Category = "SpaceCooking|OnlyVisible")
 	bool bIsActive = false;

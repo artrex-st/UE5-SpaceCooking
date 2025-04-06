@@ -28,11 +28,12 @@ public:
 		meta = (ToolTip = "Define se deve travar quando chegar ao destino."))
 	bool bHasLockOnEnd = false;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "SpaceCooking|Gameplay",
-		meta = (ToolTip = "Define se deve travar quando chegar ao destino."))
+		meta = (ToolTip = "Define se esse transporter se move quando ativado"))
 	bool bSelfActorTrigger = false;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "SpaceCooking|Gameplay")
-	TArray<AActor*> TriggerActors;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "SpaceCooking|Gameplay",
+		meta = (ToolTip = "Define se quais são os Actors que ativam esse Transporter."))
+	TArray<AActor*> MyTriggerActors;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "SpaceCooking|OnlyVisible")
 	int ActivatedTriggerCount = 0;

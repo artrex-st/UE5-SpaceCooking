@@ -67,7 +67,7 @@ void ASCInteractionActor::OnRep_IsSwitcherEnabled()
 		CurrentMaterial = MaterialInstanceEnable;
 		bAllTriggerActorsTriggered = OtherTriggers.Num() > 0 && ActivatedTriggerCount >= OtherTriggers.Num();
 
-		if (!bHasLockOnEnd)
+		if (!bHasTimeToDeActive)
 		{
 			GetWorld()->GetTimerManager().SetTimer(SwitcherTimer, this,	&ASCInteractionActor::PerformSwitcher, SyncTimer, false);
 		}

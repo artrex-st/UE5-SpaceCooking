@@ -27,6 +27,7 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "SpaceCooking|OnlyVisible",
 		meta = (ToolTip = "Shape visual"))
 	UStaticMeshComponent* Mesh;
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "SpaceCooking|Gameplay",
 	meta = (ToolTip = "Velocidade da animaçao da mesh"))
 	float KeyMeshRotationSpeed = 100;

@@ -20,9 +20,9 @@ void USCTransporter::BeginPlay()
 	Super::BeginPlay();
 	MyOwner = GetOwner();
 
-	if (bSelfActorTrigger) TriggerActors.Add(MyOwner);
+	if (bSelfActorTrigger) MyTriggerActors.Add(MyOwner);
 
-	for (AActor* Actor : TriggerActors)
+	for (AActor* Actor : MyTriggerActors)
 	{
 		if (ASCDetectionActor* Detector = Cast<ASCDetectionActor>(Actor))
 		{
@@ -58,7 +58,7 @@ void USCTransporter::SetTransporterPoints(FVector NewStartPoint, FVector NewEndP
 void USCTransporter::OnDetectionActivated()
 {
 	ActivatedTriggerCount++;
-	bAllTriggerActorsTriggered = TriggerActors.Num() > 0 && ActivatedTriggerCount >= TriggerActors.Num();
+	bAllTriggerActorsTriggered = MyTriggerActors.Num() > 0 && ActivatedTriggerCount >= MyTriggerActors.Num();
 
 	USCUtilsLibrary::PrintStringScreen(FString::Printf(TEXT("Active Detectors: %d"), ActivatedTriggerCount));
 
@@ -83,7 +83,7 @@ void USCTransporter::TransporterActivateMove()
 {
 	if (!MyOwner) return;
 
-	bAllTriggerActorsTriggered = TriggerActors.Num() > 0 && ActivatedTriggerCount >= TriggerActors.Num();
+	bAllTriggerActorsTriggered = MyTriggerActors.Num() > 0 && ActivatedTriggerCount >= MyTriggerActors.Num();
 	FVector CurrentLocation = MyOwner->GetActorLocation();
 	float Speed = FVector::Distance(StartPoint, EndPoint) / MoveTime;
 	FVector TargetLocation = bAllTriggerActorsTriggered ? EndPoint : StartPoint;
