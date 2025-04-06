@@ -13,7 +13,6 @@ class SPACECOOKING_API USCTransporter : public UActorComponent
 	GENERATED_BODY()
 public:
 	USCTransporter();
-protected:
 	virtual void BeginPlay() override;
 
 public:
