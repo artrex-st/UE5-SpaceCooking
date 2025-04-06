@@ -66,22 +66,12 @@ void ASCInteractionActor::OnRep_IsSwitcherEnabled()
 		OnActivated.Broadcast();
 		CurrentMaterial = MaterialInstanceEnable;
 		bAllTriggerActorsTriggered = OtherTriggers.Num() > 0 && ActivatedTriggerCount >= OtherTriggers.Num();
-
-		if (!bHasTimeToDeActive)
-		{
-			GetWorld()->GetTimerManager().SetTimer(SwitcherTimer, this,	&ASCInteractionActor::PerformSwitcher, SyncTimer, false);
-		}
 	}
 	else
 	{
 		ActivatedTriggerCount--;
 		OnDeactivated.Broadcast();
 		CurrentMaterial = MaterialInstanceDisable;
-
-		if (GetWorld()->GetTimerManager().IsTimerActive(SwitcherTimer))
-		{
-			GetWorld()->GetTimerManager().ClearTimer(SwitcherTimer);
-		}
 	}
 
 	Mesh->SetMaterial(1, CurrentMaterial);
@@ -92,8 +82,20 @@ void ASCInteractionActor::ActiveInteraction()
 {
 	if (!HasAuthority()) return;
 
-	bIsActive = !bIsActive;
+	bIsActive = bLockOnAll ? bLockOnAll : !bIsActive;
 	OnRep_IsSwitcherEnabled();
+
+	if (bIsActive && bHasTimeToDeActive)
+	{
+		GetWorld()->GetTimerManager().SetTimer(SwitcherTimer, this,	&ASCInteractionActor::PerformSwitcher, SyncTimer, false);
+		return;
+	}
+
+	if (GetWorld()->GetTimerManager().IsTimerActive(SwitcherTimer))
+	{
+		GetWorld()->GetTimerManager().ClearTimer(SwitcherTimer);
+	}
+
 }
 
 void ASCInteractionActor::PerformSwitcher()
@@ -103,6 +105,7 @@ void ASCInteractionActor::PerformSwitcher()
 	if (bAllTriggerActorsTriggered)
 	{
 		USCUtilsLibrary::PrintStringScreen(FString::Printf(TEXT("All Triggers OK")));
+		bLockOnAll = bHasLockOnAll;
 		return;
 	}
 
@@ -119,8 +122,6 @@ void ASCInteractionActor::OnDetectorActivated()
 {
 	ActivatedTriggerCount++;
 	bAllTriggerActorsTriggered = OtherTriggers.Num() > 0 && ActivatedTriggerCount >= OtherTriggers.Num();
-
-	USCUtilsLibrary::PrintStringScreen(FString::Printf(TEXT("Active Detectors: %d"), ActivatedTriggerCount));
 
 	if (bAllTriggerActorsTriggered && HasAuthority())
 	{

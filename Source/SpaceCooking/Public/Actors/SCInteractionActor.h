@@ -37,6 +37,9 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "SpaceCooking|Gameplay",
 		meta = (ToolTip = "Define se é desativa com tempo ou nao."))
 	bool bHasTimeToDeActive = false;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "SpaceCooking|Gameplay",
+		meta = (ToolTip = "Define se trava a ativaçao se todos ativarem juntos 1 unica vez"))
+	bool bHasLockOnAll = false;
 
 	UPROPERTY(ReplicatedUsing= OnRep_IsSwitcherEnabled, BlueprintReadWrite, VisibleAnywhere, Category = "SpaceCooking|OnlyVisible")
 	bool bIsActive = false;
@@ -70,6 +73,7 @@ protected:
 private:
 	int ActivatedTriggerCount = 0;
 	bool bAllTriggerActorsTriggered = false;
+	bool bLockOnAll = false;
 	float SwitcherTimerInterval = 0.016f;
 	FTimerHandle SwitcherTimer;
 };

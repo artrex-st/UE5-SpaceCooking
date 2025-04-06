@@ -65,6 +65,7 @@ void USCTransporter::OnDetectionActivated()
 	if (MyOwner = GetOwner(); bAllTriggerActorsTriggered && MyOwner && MyOwner->HasAuthority() && bIsPointsSet)
 	{
 		USCUtilsLibrary::PrintStringScreen(FString::Printf(TEXT("All Triggers OK")));
+		bLockOnAll = bHasLockOnAll;
 
 		if (GetWorld()->GetTimerManager().IsTimerActive(TransporterTimer)) return;
 
@@ -75,6 +76,8 @@ void USCTransporter::OnDetectionActivated()
 
 void USCTransporter::OnDetectionDeactivated()
 {
+	if (bLockOnAll) return;
+
 	ActivatedTriggerCount--;	
 	USCUtilsLibrary::PrintStringScreen(FString::Printf(TEXT("[Deactivate] Active Detectors: %d"), ActivatedTriggerCount));
 }

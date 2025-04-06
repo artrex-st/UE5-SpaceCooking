@@ -28,6 +28,9 @@ public:
 		meta = (ToolTip = "Define se deve travar quando chegar ao destino."))
 	bool bHasLockOnEnd = false;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "SpaceCooking|Gameplay",
+	meta = (ToolTip = "Define se trava a ativaçao se todos ativarem juntos 1 unica vez"))
+	bool bHasLockOnAll = false;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "SpaceCooking|Gameplay",
 		meta = (ToolTip = "Define se esse transporter se move quando ativado"))
 	bool bSelfActorTrigger = false;
 
@@ -50,6 +53,7 @@ public:
 
 private:
 	float TransporterTimerInterval = 0.016f;
+	bool bLockOnAll = false;
 	FTimerHandle TransporterTimer;
 
 	UPROPERTY()
