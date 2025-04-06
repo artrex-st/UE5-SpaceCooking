@@ -74,13 +74,13 @@ void USCMultiplayerSessionsSubsystem::CreateServer(FString ServerName)
 	SessionSettings.bAllowJoinInProgress = true;
 	SessionSettings.bIsDedicated = false;
 	SessionSettings.bShouldAdvertise = true;
-	SessionSettings.NumPublicConnections = 2;
+	SessionSettings.NumPublicConnections = 4;
 	SessionSettings.bUseLobbiesIfAvailable = true;
 	SessionSettings.bUsesPresence = true;
 	SessionSettings.bAllowJoinViaPresence = true;
 
 	const bool IsLan = Online::GetSubsystem(GetWorld())->GetSubsystemName().IsEqual(FName("NULL"));
-	SessionSettings.bIsLANMatch = IsLan;
+	SessionSettings.bIsLANMatch = false;
 	SessionSettings.Set(ServerNameFlag, ServerName, EOnlineDataAdvertisementType::ViaOnlineServiceAndPing);
 
 	SessionInterface.Pin()->CreateSession(0, MySessionName, SessionSettings);
@@ -97,8 +97,8 @@ void USCMultiplayerSessionsSubsystem::JoinServer(FString ServerName)
 
 	SessionSearchSettings = MakeShareable(new FOnlineSessionSearch());
 	const bool IsLan = Online::GetSubsystem(GetWorld())->GetSubsystemName().IsEqual(FName("NULL"));
-	SessionSearchSettings->bIsLanQuery = IsLan;
-	SessionSearchSettings->MaxSearchResults = 999;
+	SessionSearchSettings->bIsLanQuery = false;
+	SessionSearchSettings->MaxSearchResults = 0;
 	SessionSearchSettings->QuerySettings.Set(SEARCH_PRESENCE, true, EOnlineComparisonOp::Equals);
 
 	ServerNameToFind = ServerName;
