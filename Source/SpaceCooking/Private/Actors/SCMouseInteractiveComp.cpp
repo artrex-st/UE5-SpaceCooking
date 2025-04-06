@@ -65,7 +65,7 @@ void USCMouseInteractiveComp::Interact()
 
 	if (GetWorld()->LineTraceSingleByChannel(HitResult, Start, End, ECC_WorldDynamic, Params))
 	{
-		DrawDebugSphere(GetWorld(), HitResult.ImpactPoint, 25, 8,FColor::Purple, false, 10);
+		//DrawDebugSphere(GetWorld(), HitResult.ImpactPoint, 25, 8,FColor::Purple, false, 10);
 		if (HitResult.GetActor() && HitResult.GetActor()->ActorHasTag(Interactable))
 		{
 			GrabbedActor = HitResult.GetActor();
