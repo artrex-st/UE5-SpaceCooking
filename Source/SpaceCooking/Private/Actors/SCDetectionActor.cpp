@@ -56,13 +56,11 @@ void ASCDetectionActor::OnTriggerEndOverlap(UPrimitiveComponent* OverlappedComp,
 		{
 			ActorsDetected.Remove(Other);
 			OnDeactivated.Broadcast();
-			USCUtilsLibrary::PrintStringScreen("Deactivate Broadcast");
 		}
 
 		if (ActorsDetected.Num() <= 0)
 		{
 			bActivated = false;
-			USCUtilsLibrary::PrintStringScreen("Deactivate Bool");
 			GetWorldTimerManager().ClearTimer(DetectionTimer);
 		}
 	}

@@ -3,6 +3,7 @@
 
 #include "Actors/SCMouseInteractiveComp.h"
 
+#include "Actors/SCInteractionActor.h"
 #include "Camera/CameraComponent.h"
 #include "GameFramework/Character.h"
 #include "SpaceCooking/SpaceCookingCharacter.h"
@@ -22,22 +23,24 @@ void USCMouseInteractiveComp::BeginPlay()
 	
 }
 
-void USCMouseInteractiveComp::ServerInteract_Implementation()
+void USCMouseInteractiveComp::InteractRPC_Implementation()
 {
 	Interact();
 }
 
-bool USCMouseInteractiveComp::ServerInteract_Validate()
+//validaçao não necessaria
+bool USCMouseInteractiveComp::InteractRPC_Validate()
 {
 	return true;
 }
 
-void USCMouseInteractiveComp::ServerRelease_Implementation()
+void USCMouseInteractiveComp::ReleaseRPC_Implementation()
 {
 	Release();
 }
 
-bool USCMouseInteractiveComp::ServerRelease_Validate()
+//validaçao não necessaria
+bool USCMouseInteractiveComp::ReleaseRPC_Validate()
 {
 	return true;
 }
@@ -62,11 +65,18 @@ void USCMouseInteractiveComp::Interact()
 
 	if (GetWorld()->LineTraceSingleByChannel(HitResult, Start, End, ECC_WorldDynamic, Params))
 	{
+		DrawDebugSphere(GetWorld(), HitResult.ImpactPoint, 25, 8,FColor::Purple, false, 10);
 		if (HitResult.GetActor() && HitResult.GetActor()->ActorHasTag(Interactable))
 		{
 			GrabbedActor = HitResult.GetActor();
 			GrabbedActor->DisableComponentsSimulatePhysics();
 			GrabbedActor->AttachToComponent(OwnerCharacter->GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, InteractableSocket);
+			//TODO: Add Feedback (VFX/SFX)
+		}
+
+		if (ASCInteractionActor* InteractionActor = Cast<ASCInteractionActor>(HitResult.GetActor()))
+		{
+			InteractionActor->ActiveInteraction();
 			//TODO: Add Feedback (VFX/SFX)
 		}
 	}

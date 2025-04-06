@@ -1,7 +1,6 @@
 // Copyright Epic Games, Inc. All Rights Reserved.
 
 #include "SpaceCookingCharacter.h"
-#include "SpaceCookingProjectile.h"
 #include "Animation/AnimInstance.h"
 #include "Camera/CameraComponent.h"
 #include "Components/CapsuleComponent.h"
@@ -117,7 +116,7 @@ void ASpaceCookingCharacter::HandleInteraction()
 	}
 	else
 	{
-		MouseInteractiveComp->ServerInteract();
+		MouseInteractiveComp->InteractRPC();
 	}
 }
 

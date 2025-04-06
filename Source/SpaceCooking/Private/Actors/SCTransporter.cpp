@@ -37,11 +37,6 @@ void USCTransporter::BeginPlay()
 	}
 }
 
-void USCTransporter::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
-{
-	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
-}
-
 void USCTransporter::SetTransporterPoints(FVector NewStartPoint, FVector NewEndPoint)
 {
 	if (NewStartPoint.Equals(NewEndPoint)) return;
