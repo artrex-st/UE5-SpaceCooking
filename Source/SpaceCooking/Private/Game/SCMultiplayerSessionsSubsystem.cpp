@@ -98,7 +98,7 @@ void USCMultiplayerSessionsSubsystem::JoinServer(FString ServerName)
 	SessionSearchSettings = MakeShareable(new FOnlineSessionSearch());
 	const bool IsLan = Online::GetSubsystem(GetWorld())->GetSubsystemName().IsEqual(FName("NULL"));
 	SessionSearchSettings->bIsLanQuery = false;
-	SessionSearchSettings->MaxSearchResults = 0;
+	SessionSearchSettings->MaxSearchResults = 99999;
 	SessionSearchSettings->QuerySettings.Set(SEARCH_PRESENCE, true, EOnlineComparisonOp::Equals);
 
 	ServerNameToFind = ServerName;
